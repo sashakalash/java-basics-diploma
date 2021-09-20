@@ -44,8 +44,9 @@ public class Converter implements TextGraphicsConverter {
 
         int[] pixelStorage = new int[3];
         StringBuilder imageString = new StringBuilder();
-        for (int w = 0; w < newWidth; w++) {
-            for (int h = 0; h < newHeight; h++) {
+        String str = "";
+        for (int h = 0; h <= newHeight; h++) {
+            for (int w = newWidth; w >= 0; w--) {
                 int color = bwRaster.getPixel(w, h, pixelStorage)[0];
                 char c = schema.convert(color);
                 /**
