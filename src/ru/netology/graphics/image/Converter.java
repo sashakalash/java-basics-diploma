@@ -13,7 +13,7 @@ public class Converter implements TextGraphicsConverter {
     private Schema schema = new Schema();
     private final Double DOUBLE_EMPTY_VALUE = 0.0;
     private Double maxRatio = DOUBLE_EMPTY_VALUE;
-    private final double NUMBER_TO_CORRECT_COMPARING = 1.0000001;
+    private final double NUMBER_TO_CORRECT_COMPARING = 0.0000001;
 
     @Override
     public String convert(String url) throws IOException, BadImageSizeException {
@@ -79,9 +79,11 @@ public class Converter implements TextGraphicsConverter {
     }
 
     private void checkRatio(int width, int height) throws BadImageSizeException {
+        float widthFloat = width;
+        float heightFloat = height;
         double initRatio = maxRatio.doubleValue();
-        double newRatio = width / height;
-        if (initRatio != DOUBLE_EMPTY_VALUE && newRatio > initRatio) {
+        float newRatio = widthFloat / heightFloat;
+        if (initRatio != DOUBLE_EMPTY_VALUE && Math.abs(newRatio - initRatio) > NUMBER_TO_CORRECT_COMPARING) {
             throw new BadImageSizeException(newRatio, initRatio);
         }
     }
@@ -94,7 +96,7 @@ public class Converter implements TextGraphicsConverter {
         float widthFloat = width;
         float initWidthFloat = this.width;
         float ratio = widthFloat / initWidthFloat;
-        return this.width != 0 && ratio > NUMBER_TO_CORRECT_COMPARING ? this.width : width;
+        return this.width != 0 && ratio > (NUMBER_TO_CORRECT_COMPARING + 1) ? this.width : width;
     }
 
     private int getNewHeight(int height, int newWidth, int oldWidth) {
