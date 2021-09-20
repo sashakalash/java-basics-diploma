@@ -14,4 +14,8 @@ public class Schema implements TextColorSchema {
     public char convert(int color) {
         return initSchema[initSchema.length - 1 - (color / charCoeffToGet)];
     }
+
+    public void setInitSchema(char[] initSchema) {
+        this.initSchema = initSchema;
+    }
 }
