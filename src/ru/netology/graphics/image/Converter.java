@@ -23,8 +23,17 @@ public class Converter implements TextGraphicsConverter {
         int imgHeight = img.getHeight();
         checkRatio(imgWidth, imgHeight);
 
-        int newWidth = getNewWidth(imgWidth);
-        int newHeight = getNewHeight(imgHeight, newWidth, imgWidth);
+        boolean isWidthBigger = isBigger(imgWidth, imgHeight);
+
+        int newWidth;
+        int newHeight;
+        if (isWidthBigger) {
+            newWidth = getMainValue(imgWidth, this.width);
+            newHeight = getAdictedValue(this.height, newWidth, this.width);
+        } else {
+            newHeight = getMainValue(imgHeight, this.height);
+            newWidth = getAdictedValue(this.width, newHeight, this.height);
+        }
 
         /**
          * Получаем ссылку на новую картинку, которая представляет собой суженную
@@ -45,10 +54,8 @@ public class Converter implements TextGraphicsConverter {
 
         int[] pixelStorage = new int[3];
         StringBuilder imageString = new StringBuilder();
-
         for (int h = 0; h < newHeight; h++) {
             for (int w = newWidth - 1; w >= 0; w--) {
-
                 int color = bwRaster.getPixel(w, h, pixelStorage)[0];
                 char c = schema.convert(color);
                 /**
@@ -91,26 +98,36 @@ public class Converter implements TextGraphicsConverter {
         }
     }
 
-    private int getNewWidth(int width) {
+    private boolean isBigger(int a, int b) {
         /**
-         * если задана ширина, то проверяем больше ли ширина полученной картинки
-         * заданной ширины и возвращаем заданную, в противном случае возвращаем ширину
-         * картинки
+         * определяем какая из сторон больше, в случае равного значения за "ведущую"
+         * сторону принимаем ширину
          */
-        float widthFloat = width;
-        float initWidthFloat = this.width;
-        float ratio = widthFloat / initWidthFloat;
-        return this.width != 0 && ratio > (NUMBER_TO_CORRECT_COMPARING + 1) ? this.width : width;
+        float aFloat = a;
+        float bFloat = b;
+        return Math.abs(aFloat - bFloat) < NUMBER_TO_CORRECT_COMPARING || a - b > 0;
     }
 
-    private int getNewHeight(int height, int newWidth, int oldWidth) {
-        /**
-         * возвращаем высоту полученной картинки, измененную в соотношении новой ширины
-         * к старой
+    private int getMainValue(int value, int initValue) {
+         /**
+         * если задано значение, то проверяем больше ли данное значение полученного от картинки
+         * и возвращаем заданное, в противном случае возвращаем знчение, полученное от
+         * картинки
          */
-        float newWidthFloat = newWidth;
-        float oldWidthFloat = oldWidth;
-        float ratio = newWidthFloat / oldWidthFloat;
-        return Math.round(height * ratio);
+        float valueFloat = value;
+        float initValueFloat = initValue;
+        float ratio = valueFloat / initValueFloat;
+        return initValue != 0 && ratio > (NUMBER_TO_CORRECT_COMPARING + 1) ? initValue : value;
+    }
+
+    private int getAdictedValue(int addictedValue, int newMainValue, int oldMainValue) {
+        /**
+         * возвращаем значение, полученное от картинки, измененное в соотношении нового "ведущего"
+         * знасения к старому
+         */
+        float newMainValueFloat = newMainValue;
+        float oldMainValueFloat = oldMainValue;
+        float ratio = newMainValueFloat / oldMainValueFloat;
+        return Math.round(addictedValue * ratio);
     }
 }
