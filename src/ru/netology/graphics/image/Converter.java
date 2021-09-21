@@ -27,12 +27,13 @@ public class Converter implements TextGraphicsConverter {
         int newHeight = getNewHeight(imgHeight, newWidth, imgWidth);
 
         /**
-         * Получаем ссылку на новую картинку, которая представляет собой суженную старую.
+         * Получаем ссылку на новую картинку, которая представляет собой суженную
+         * старую.
          */
         Image scaledImage = img.getScaledInstance(newWidth, newHeight, BufferedImage.SCALE_SMOOTH);
         /**
-         *  Создадим новую пустую картинку нужных размеров, заранее указав последним
-         *  параметром чёрно-белую цветовую палитру:
+         * Создадим новую пустую картинку нужных размеров, заранее указав последним
+         * параметром чёрно-белую цветовую палитру:
          */
         BufferedImage bwImg = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_BYTE_GRAY);
 
@@ -44,15 +45,16 @@ public class Converter implements TextGraphicsConverter {
 
         int[] pixelStorage = new int[3];
         StringBuilder imageString = new StringBuilder();
-        String str = "";
-        for (int h = 0; h <= newHeight; h++) {
-            for (int w = newWidth; w >= 0; w--) {
+
+        for (int h = 0; h < newHeight; h++) {
+            for (int w = newWidth - 1; w >= 0; w--) {
+
                 int color = bwRaster.getPixel(w, h, pixelStorage)[0];
                 char c = schema.convert(color);
                 /**
                  * Для того чтобы изображение не было слишком узким, каждый пиксель дублируется
                  */
-                imageString.append(c).append(c);
+                imageString.append(c);
             }
             imageString.append("\n");
         }
@@ -91,8 +93,9 @@ public class Converter implements TextGraphicsConverter {
 
     private int getNewWidth(int width) {
         /**
-         если задана ширина, то проверяем больше ли ширина полученной картинки заданной ширины и возвращаем заданную,
-         в противном случае возвращаем ширину картинки
+         * если задана ширина, то проверяем больше ли ширина полученной картинки
+         * заданной ширины и возвращаем заданную, в противном случае возвращаем ширину
+         * картинки
          */
         float widthFloat = width;
         float initWidthFloat = this.width;
@@ -102,7 +105,8 @@ public class Converter implements TextGraphicsConverter {
 
     private int getNewHeight(int height, int newWidth, int oldWidth) {
         /**
-         возвращаем высоту полученной картинки, измененную в соотношении новой ширины к старой
+         * возвращаем высоту полученной картинки, измененную в соотношении новой ширины
+         * к старой
          */
         float newWidthFloat = newWidth;
         float oldWidthFloat = oldWidth;
