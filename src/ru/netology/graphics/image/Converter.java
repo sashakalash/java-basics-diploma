@@ -54,14 +54,14 @@ public class Converter implements TextGraphicsConverter {
 
         int[] pixelStorage = new int[3];
         StringBuilder imageString = new StringBuilder();
-        for (int h = 0; h < newHeight; h++) {
-            for (int w = newWidth - 1; w >= 0; w--) {
-                int color = bwRaster.getPixel(w, h, pixelStorage)[0];
+        for (int y = 0; y < newHeight; y++) {
+            for (int x = 0; x < newWidth; x++) {
+                int color = bwRaster.getPixel(x, y, pixelStorage)[0];
                 char c = schema.convert(color);
                 /**
                  * Для того чтобы изображение не было слишком узким, каждый пиксель дублируется
                  */
-                imageString.append(c);
+                imageString.append(c).append(c);
             }
             imageString.append("\n");
         }
