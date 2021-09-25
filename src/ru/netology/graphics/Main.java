@@ -9,17 +9,17 @@ import java.io.PrintWriter;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-        // TextGraphicsConverter converter = new Converter();
-        //
-        // GServer server = new GServer(converter); // Создаём объект сервера
-        // server.start(); // Запускаем
+         TextGraphicsConverter converter = new Converter();
 
-        TextGraphicsConverter converter = new Converter();
-        PrintWriter fileWriter = new PrintWriter(new File("converted-image.txt"));
-        converter.setMaxWidth(200);
-        converter.setMaxHeight(300);
-        fileWriter.write(converter.convert("https://i.ibb.co/SKh861c/Full-Size-Render.jpg"));
-
-        fileWriter.close();
+         GServer server = new GServer(converter); // Создаём объект сервера
+         server.start(); // Запускаем
+//
+//        TextGraphicsConverter converter = new Converter();
+//        PrintWriter fileWriter = new PrintWriter(new File("converted-image.txt"));
+//        converter.setMaxWidth(200);
+//        converter.setMaxHeight(300);
+//        fileWriter.write(converter.convert("https://i.ibb.co/6DYM05G/edu0.jpg"));
+//
+//        fileWriter.close();
     }
 }

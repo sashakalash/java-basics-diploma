@@ -92,8 +92,8 @@ public class Converter implements TextGraphicsConverter {
         float widthFloat = width;
         float heightFloat = height;
         double initRatio = maxRatio.doubleValue();
-        float newRatio = widthFloat / heightFloat;
-        if (initRatio != DOUBLE_EMPTY_VALUE && Math.abs(newRatio - initRatio) > NUMBER_TO_CORRECT_COMPARING) {
+        double newRatio = widthFloat / heightFloat;
+        if (initRatio != DOUBLE_EMPTY_VALUE && newRatio - initRatio > NUMBER_TO_CORRECT_COMPARING) {
             throw new BadImageSizeException(newRatio, initRatio);
         }
     }
